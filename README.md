@@ -7,6 +7,25 @@
 
 **a)** Explica brevemente el funcionamiento del **Algoritmo de Dijkstra** para encontrar la ruta más corta entre dos nodos en un grafo ponderado.
 
+1. **Inicialización de distancias**  
+   - Asigna al nodo de origen `s` una distancia provisional de `0`.  
+   - Para todos los demás nodos `N`, fija su distancia provisional en `∞`.  
+   - Mantén dos conjuntos:  
+     - **No visitados**: contiene todos los nodos.  
+     - **Visitados**: inicialmente vacío.
+
+2. **Selección del nodo activo**  
+   - Dentro del conjunto de nodos **no visitados**, elijo aquel con la distancia provisional más baja; lo llamaremos `DisBaja`.  
+   - Muevo `DisBaja` del conjunto **no visitados** al conjunto **visitados**.  
+
+3. **Actualización de distancias (relajación)**  
+   - Para cada nodo vecino `N` de `DisBaja` (es decir, para cada arista `(N,DisBaja)`):  
+     1. Calcula la distancia alternativa:  
+        ```
+        dist_alt = dist[DisBaja] + peso(DisBaja, N)
+        ```  
+     2. Si `dist_alt < dist[N]`, reemplaza `dist[N]` por `dist_alt` y guarda `DisBaja
+
 **b)** Describe el método de **Enrutamiento por Inundación (Flooding)** y discute sus ventajas y desventajas comparándolo con Dijkstra.
 
 ## Pregunta 2: Cálculo de Direcciones de Broadcast y Subredes
