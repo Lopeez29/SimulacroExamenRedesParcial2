@@ -3,7 +3,7 @@
 
 # Parte I: Capa de Red
 
-## Pregunta 1: Cálculo de Ruta Más Corta
+## Pregunta 1: Cálculo de Ruta Más Corta ✓
 
 **a)** Explica brevemente el funcionamiento del **Algoritmo de Dijkstra** para encontrar la ruta más corta entre dos nodos en un grafo ponderado.
 
@@ -51,13 +51,15 @@ Para ello, utiliza un identificador único para descartar duplicados y evitar bu
 
 **b)** Dado el host `172.18.171.190/23`, identifica a qué subred pertenece, explicando cómo se determina el bloque correspondiente.
 
-## Pregunta 5: Número de Subredes Necesarias
+## Pregunta 5: Número de Subredes Necesarias ✓
 
 Explica cómo se determina el número de subredes disponibles utilizando la fórmula:
 
 **Nº de subredes = 2^s**
 
 donde **s** es el número de bits prestados al identificador de subred. Aplica este concepto a un escenario en el que se requieren al menos 4 subredes para segmentar una red.
+
+Para calcular el número de subredes disponibles se usa la fórmula **Nº de subredes = 2^s**, donde *s* es el número de bits prestados. Si necesitamos al menos 4 subredes, buscamos el menor *s* tal que 2^s ≥ 4; con *s* = 2 tenemos 2^2 = 4 subredes. Por tanto basta con tomar 2 bits prestados (por ejemplo, pasar de /24 a /26) para obtener exactamente 4 subredes.  
 
 ## Parte II: Capa de Transporte
 
