@@ -37,6 +37,15 @@ Para ello, utiliza un identificador único para descartar duplicados y evitar bu
 
 **a)** Para la subred `172.29.152.0` con máscara `255.255.248.0`, determina la dirección de broadcast. Explica el proceso de conversión de la máscara a binario y cómo se obtiene el resultado.
 
+Para la subred **172.29.152.0/21** (máscara `255.255.248.0`):
+
+
+
+
+
+- La máscara en binario es  
+
+
 **b)** Dado el bloque `172.18.26.0/23`, calcula la dirección de broadcast y justifica el proceso.
 
 ## Pregunta 3: Última Dirección Válida y Rango de Hosts
