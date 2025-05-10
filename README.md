@@ -162,23 +162,31 @@ Caben **≈ 417** segmentos simultáneos (416 completos y uno a la mitad aproxid
 - **Ventana óptima** = 5 000 000 bits (625 000 bytes)  
 - **Segmentos simultáneos** ≈ 417  
 
-### Pregunta 10: Control de Congestión en TCP
+### Pregunta 10: Control de Congestión en TCP ✓
 
 Explica brevemente cómo TCP implementa mecanismos de control de congestión, haciendo énfasis en:
 
-- El **Algoritmo de Arranque Lento (Slow Start)**  
-- El **Algoritmo de Nagle**  
-- El **Algoritmo de Clark**  
+- El **Algoritmo de Arranque Lento (Slow Start)**
 
-Para cada uno, menciona cuál es su objetivo y cómo contribuye a optimizar el rendimiento de la red.
+**Arranque Lento (Slow Start):** al iniciar una conexión pongo la ventana en 1 MSS y, por cada ACK recibido, la incremento en 1 MSS (duplicando la ventana cada RTT). Así pruebo rápida y gradualmente la capacidad de la red sin saturarla de golpe.
+  
+- El **Algoritmo de Nagle**
+
+**Algoritmo de Nagle:** si tengo varios datos pequeños pendientes, no envío cada uno de inmediato, sino que agrupo hasta formar un MSS o hasta recibir un ACK que me permita vaciar el buffer. Esto evita inundar la red con paquetes diminutos.
+  
+- El **Algoritmo de Clark**
+
+**Algoritmo de Clark:** cuando detecto pérdida de un paquete, en lugar de reiniciar la ventana al mínimo, reduzco la `ssthresh` a la mitad de la `cwnd` actual, paso a Slow Start sólo hasta alcanzar esa nueva `ssthresh` y luego sigo con congestión aditiva. Con ello no pierdo todo el progreso al recuperarme de la congestión.
 
 ## Parte III: Capa de Aplicación y Aplicaciones Multimedia
 
-### Pregunta 11: Funcionamiento de DNS
+### Pregunta 11: Funcionamiento de DNS ✓
 
 Describe el proceso completo de resolución de nombres en el **Sistema de Nombres de Dominio (DNS)**, desde que el usuario ingresa un dominio en el navegador hasta que se obtiene la dirección IP del servidor.
 
-### Pregunta 12: Protocolos de Correo Electrónico
+Cuando escribo un dominio en el navegador, mi equipo pregunta primero a su servidor DNS configurado (resolver), que suele tener en caché la IP; si no la tiene, hace una consulta recursiva al root, recibe la referencia a los servidores TLD (por ejemplo “.com”), luego pregunta a esos servidores TLD para que le digan quién es el autoritativo de “midominio.com” y, finalmente, consulta a ese autoritativo para obtener la IP concreta. Cada respuesta va almacenándose en caché (root, TLD y autoritativo) según su tiempo de vida (TTL), de modo que las siguientes búsquedas sean más rápidas hasta que expire la información.
+
+### Pregunta 12: Protocolos de Correo Electrónico ✓
 
 Compara las características de los protocolos **POP3**, **IMAP** y **SMTP** en términos de:
 
@@ -188,13 +196,23 @@ Compara las características de los protocolos **POP3**, **IMAP** y **SMTP** en 
 
 Incluye ejemplos de situaciones en las que cada uno es más adecuado.
 
-### Pregunta 13: Funcionamiento de HTTP y FTP
+**POP3** se encarga de descargar los correos del servidor al cliente y, por defecto, los elimina del servidor tras la descarga. Es muy sencillo y funciona bien si siempre accedo al mismo equipo (p. ej. mi PC de sobremesa), pero no es ideal si quiero leer el mismo buzón desde varios dispositivos.
+
+**IMAP** mantiene los mensajes en el servidor y permite acceder a carpetas remotas sin descargarlos completamente. Es el más recomendable cuando uso varios dispositivos (móvil, tablet), porque cualquier cambio se refleja en todos ellos al quedar todo sincronizado en el servidor.
+
+**SMTP** es el protocolo de envío de correo: gestiona la comunicación entre el cliente y el servidor de salida. No almacena mensajes a largo plazo, solo se ocupa de entregarlos al servidor de destino. Lo uso siempre que envío un correo, ya sea desde el cliente de escritorio o la app web, y luego queda disponible para que el receptor lo reciba vía POP3 o IMAP según su configuración.
+
+### Pregunta 13: Funcionamiento de HTTP y FTP ✓
 
 **a)** Explica el funcionamiento básico de **HTTP**, mencionando los métodos más utilizados (*GET*, *POST*, *PUT*, *DELETE*).  
 
+En HTTP el cliente inicia una conexión TCP al servidor (puerto 80 o 443), envía una petición que incluye un método (GET para leer, POST para enviar datos, PUT para actualizar y DELETE para eliminar) y espera la respuesta con sus cabeceras.
+
 **b)** Describe el funcionamiento de **FTP** y señala las diferencias esenciales con HTTP, en especial en lo que se refiere al uso de conexiones (control y datos).  
 
-### Pregunta 14: Streaming y VoIP
+FTP usa dos conexiones TCP: una de control (en el puerto 21) para enviar comandos al servidor y otra de datos (en el puerto 20 o un puerto acordado en modo pasivo) para transferir ficheros. A diferencia de HTTP, que abre y cierra la misma sesión para cada petición y respuesta y es sin estado, FTP mantiene un canal permanente de control separado del de datos, lo que puede dificultar su uso a través de firewalls y NAT.
+
+### Pregunta 14: Streaming y VoIP ✓
 
 **a)** Define y compara brevemente los siguientes tipos de streaming:  
 - **UDP Streaming**  
@@ -203,23 +221,38 @@ Incluye ejemplos de situaciones en las que cada uno es más adecuado.
 
 Menciona un ejemplo de aplicación para cada uno.
 
+- **UDP Streaming:** envía paquetes sin confirmar recepción ni orden, lo que minimiza retrasos. Los ejemplos son las transmisiones en directo de radio por Internet donde se tolera alguna pérdida de audio.  
+- **HTTP Streaming:** usa conexiones HTTP/TCP para descargar segmentos secuenciales de un archivo multimedia. Los ejemplos son los vídeos de plataformas como YouTube.  
+- **Adaptive HTTP Streaming (DASH):** divide el contenido en fragmentos de distintas calidades y ajusta automáticamente el nivel según el ancho de banda disponible. Los ejemplos son los servicios de vídeo en streaming como Netflix
+
 **b)** Explica el proceso de funcionamiento de **VoIP** (Voz sobre IP) y enumera algunos problemas comunes (como retardo, pérdida de paquetes y eco) junto con posibles soluciones.  
 
-### Pregunta 15: Control de Congestión en Redes Multimedia
+En **VoIP** la voz se fragmenta en paquetes RTP sobre UDP y se envía sin establecer conexión previa. Los problemas más comunes son:  
+- **Retardo:** se soluciona con mecanismos de calidad de servicio (QoS) y priorización de paquetes.  
+- **Pérdida de paquetes:** se mitiga usando buffers de jitter y técnicas de corrección FEC.  
+- **Eco:** se combate con algoritmos de cancelación de eco integrados en el terminal o en el gateway.
+
+### Pregunta 15: Control de Congestión en Redes Multimedia ✓
 
 Describe dos técnicas utilizadas para evitar la congestión en aplicaciones multimedia (por ejemplo, el uso de buffering en el cliente o el marcado de paquetes – DiffServ) y explica cómo contribuyen a mejorar la calidad del servicio.
 
-### Pregunta 16: Best-Effort vs Servicios Multiclase
+En aplicaciones multimedia se emplea el **buffering en el cliente**, que consiste en acumular unos milisegundos de vídeo o audio antes de reproducirlos para absorber variaciones de retardo y evitar interrupciones. También se utiliza el **marcado de paquetes**, donde los flujos multimedia reciben prioridad en los routers mediante clases de servicio, garantizando que estos paquetes avancen antes que el resto y reduciendo pérdidas y jitter. Ambas técnicas ayudan a mantener una reproducción continua y de calidad incluso ante congestión de la red.
+
+### Pregunta 16: Best-Effort vs Servicios Multiclase ✓
 
 Compara el modelo **Best-Effort** con los **Servicios Multiclase**, enfatizando:
 
 - La manera en que se maneja el tráfico  
 - La garantía (o falta de ella) en la calidad de servicio  
-- Ejemplos de aplicaciones en las que se utiliza cada enfoque  
+- Ejemplos de aplicaciones en las que se utiliza cada enfoque
+
+Yo veo que en **Best-Effort** los paquetes se tratan todos igual: los routers los envían según van llegando y, si hay congestión, simplemente empiezan a descartarlos sin aviso ni prioridad. No hay garantía ni de entrega, ni de retardo ni de ancho de banda, así que encaja bien con tareas como navegación web, correo o descargas de ficheros, donde una pequeña pérdida no rompe la experiencia.
+
+En cambio, con **Servicios Multiclase** se clasifican los flujos y se marcan para darles distintas colas en los routers, de modo que el tráfico crítico recibe prioridad y se cumple un mínimo de retardo, jitter o ancho de banda. Esto es imprescindible en escenarios como llamadas VoIP corporativas, videoconferencias o streaming en directo, donde la calidad debe mantenerse constante.
 
 ## Parte IV: Seguridad en Redes
 
-### Pregunta 17: Problemas de Seguridad en Redes
+### Pregunta 17: Problemas de Seguridad en Redes ✓
 
 Identifica y explica brevemente las siguientes áreas críticas de seguridad en redes:
 
@@ -230,7 +263,15 @@ Identifica y explica brevemente las siguientes áreas críticas de seguridad en 
 
 Para cada una, menciona una solución o técnica que se emplea para mitigar el riesgo (por ejemplo, cifrado, autenticación multifactor, firmas digitales, etc.).  
 
-### Pregunta 18: Cifrado Simétrico vs Asimétrico
+**Confidencialidad:** asegurar que sólo las partes autorizadas puedan leer los datos. Para ello uso cifrado.
+
+**Autenticación:** verificar que quien se conecta es quien dice ser. Para ello empleo métodos como contraseñas robustas, autenticación multifactor o certificados digitales.
+
+**No repudio:** impedir que una parte niegue haber enviado un mensaje. Se logra con firmas digitales basadas en PKI, ya que sólo el poseedor de la clave privada puede generar una firma válida.
+
+**Integridad:** garantizar que los datos no se alteren durante la transmisión o almacenamiento. Para ello utilizo mecanismos de verificación como HMAC o sumas de comprobación dentro de protocolos como IPsec o SSH.
+
+### Pregunta 18: Cifrado Simétrico vs Asimétrico ✓
 
 Realiza una comparación entre **cifrado simétrico** y **cifrado asimétrico**, abordando:
 
@@ -238,23 +279,52 @@ Realiza una comparación entre **cifrado simétrico** y **cifrado asimétrico**,
 - **Velocidad y eficiencia**  
 - **Ejemplos de algoritmos y aplicaciones típicas en cada caso**
 
-### Pregunta 19: Funcionamiento del Algoritmo RSA
+En **cifrado simétrico** solo hace falta una única clave secreta que comparten emisor y receptor, lo que lo hace muy rápido y eficiente para cifrar grandes volúmenes de datos. En cambio, el **cifrado asimétrico** emplea un par de claves (pública y privada) para encriptar y desencriptar,el problema es que es más lento y caro pero permite intercambiar claves sin canal seguro y sirve para firmar mensajes y certificados en HTTPS o correo seguro.
+
+### Pregunta 19: Funcionamiento del Algoritmo RSA ✓
 
 **a)** Describe el proceso de generación de claves en RSA, incluyendo la selección de dos números primos, el cálculo de _n_ y φ(_n_), y la determinación de _e_ y _d_.  
 
+Elijo dos números primos `p` y `q`.  
+2. Calculo `n = p * q` y `φ = (p - 1) * (q - 1)`.  
+3. Selecciono un entero `e` tal que `1 < e < φ` y `gcd(e, φ) = 1`. La clave pública es el par `(n, e)`.  
+4. Encuentro `d`, el inverso modular de `e` módulo `φ`, de modo que `e * d ≡ 1 (mod φ)`. Ese `d` será la clave privada.
+
 **b)** Realiza un ejemplo numérico sencillo (por ejemplo, usando _p_ = 3 (_p_ = 3), _q_ = 11 (_q_ = 11), _e_ = 7 (_e_ = 7)) para demostrar el cifrado y descifrado de un mensaje (puedes usar _M_ = 4 (_M_ = 4)).  
 
-### Pregunta 20: Firewalls, VPN e IPSec
+Ejemplo con `p = 3`, `q = 11`, `e = 7` y `M = 4`:
+
+- Calculo de parámetros:  
+  - `n = p * q = 3 * 11 = 33`  
+  - `φ = (p - 1) * (q - 1) = 2 * 10 = 20`  
+  - Verifico `gcd(e, φ) = gcd(7, 20) = 1`  
+  - Busco `d` tal que `e * d ≡ 1 (mod φ)` → `7 * d ≡ 1 (mod 20)` → `d = 3`
+
+- Cifrado de `M = 4`:
+  C = M^e mod n = 4^7 mod 33 = 16384 mod 33 = 16
+
+  Descifrado de `C = 16`:
+  M' = C^d mod n = 16^3 mod 33 = 4096 mod 33 = 4
+
+### Pregunta 20: Firewalls, VPN e IPSec ✓
 
 **a)** Explica el funcionamiento de un **firewall**, mencionando al menos dos tipos (por ejemplo, filtrado de paquetes y firewall de estado) y su importancia en la protección de la red.
 
+Un firewall es un filtro que examina y cada paquete que entra o sale de la red; un **firewall de filtrado de paquetes** bloquea o permite tráfico según reglas sobre IP y puertos, mientras que uno **stateful** también vigila el estado de cada conexión (establecida, nueva, cerrada) para evitar ataques de falsificación. Ambos son vitales para proteger la red de accesos no autorizados y tráfico malicioso.
+
 **b)** Compara **VPN** e **IPSec** en términos de propósito, modo de operación y ejemplos de uso (por ejemplo, acceso remoto a recursos corporativos vs. cifrado entre routers).
 
-### Pregunta 21: SSL/TLS y DNS Spoofing
+Una **VPN** crea un túnel cifrado entre mi dispositivo y un servidor remoto, mientras que **IPSec** ofrece cifrado y autenticación a nivel de red, a menudo configurado entre routers o gateways para proteger todo el tráfico entre sedes. La VPN me protege usuario a servidor; IPSec asegura enlace a enlace.  
+
+### Pregunta 21: SSL/TLS y DNS Spoofing ✓
 
 **a)** Describe brevemente el funcionamiento del protocolo **SSL/TLS** y su importancia para la seguridad en la web (por ejemplo, en HTTPS).
 
+SSL/TLS establece primero un canal seguro antes de intercambiar datos: el cliente envía un “paquete” con versiones y cifrados soportados, el servidor responde con su certificado y su “Paquete”, con la clave pública necesaria para cifrar un secreto compartido. A partir de ahí ambos generan claves simétricas y todo el tráfico va cifrado, garantizando confidencialidad e integridad (HTTPS usa esto para proteger las páginas web).
+
 **b)** Explica qué es el **DNS Spoofing** y cómo la extensión **DNSSEC** contribuye a proteger la integridad de las respuestas DNS.
+
+El DNS Spoofing consiste en inyectar respuestas falsas en las consultas DNS, redirigiendo al usuario a un servidor malicioso. DNSSEC evita esto firmando digitalmente cada registro con claves asimétricas: el resolver comprueba la firma de cada respuesta contra la clave pública del dominio, así solo acepta datos auténticos y no modificados.
 
 
 
