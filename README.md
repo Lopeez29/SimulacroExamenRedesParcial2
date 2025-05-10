@@ -61,7 +61,13 @@ Para la red **172.18.26.0/23** (máscara 255.255.254.0) reservo 23 bits para la 
 
 **a)** Con la subred `172.30.67.192` y máscara `255.255.255.192`, determina cuál es la última dirección de host válida (excluyendo la dirección de broadcast).
 
+Para esta subred `172.30.67.192/26` (máscara `255.255.255.192`) tengo 6 bits de host, el bloque va de `172.30.67.192` a `172.30.67.255`. Como la última IP que nos excluyen es el "broadcast", la última dirección de host válida en esta caso sería **172.30.67.254**.
+
 **b)** Para el host `172.22.53.199` con máscara `255.255.252.0`, determina el rango de direcciones válidas (primera y última dirección de host) de la subred.
+
+En `172.22.53.199/22` (máscara `255.255.252.0`), el salto es de 4 en el tercer octeto, así que la subred cubre de `172.22.52.0` a `172.22.55.255`. Queda:
+- Primera IP de host: **172.22.52.1**  
+- Última IP de host: **172.22.55.254**  
 
 ## Pregunta 4: Capacidad y Segmentación de Subredes
 
