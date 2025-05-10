@@ -91,15 +91,20 @@ Para calcular el número de subredes disponibles se usa la fórmula **Nº de sub
 
 ## Parte II: Capa de Transporte
 
-### Pregunta 6: Comparación entre TCP y UDP
+### Pregunta 6: Comparación entre TCP y UDP ✓
 
 **a)** Compara TCP y UDP en términos de:  
 - Necesidad de establecer conexión  
 - Fiabilidad y control de errores  
 - Control de flujo y congestión  
-- Velocidad de transmisión  
+- Velocidad de transmisión
+
+En TCP se establece primero un three-way handshake antes de enviar datos; se garantiza la entrega y el orden gracias a ACKs y retransmisiones, además de incorporar control de flujo (ventana deslizante) y gestión de congestión (slow start), aunque esto añade latencia. En UDP no hay conexión previa, no hay confirmaciones ni reenvíos, no controla flujo ni congestión y, por tanto, transmite más rápido pero sin asegurar que todo llegue.
 
 **b)** Menciona dos ejemplos de aplicaciones en las que se prefiera usar UDP y justifica la elección.  
+
+**Streaming**: se prioriza la fluidez, se tolera alguna pérdida antes que cortes. 
+**Juegos online**: se busca latencia mínima; un retraso por confirmaciones dañaría la experiencia.
 
 ### Pregunta 7: Establecimiento y Terminación de Conexión en TCP
 
