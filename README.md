@@ -119,7 +119,7 @@ Explica el concepto de **multiplexación descendente** y **multiplexación ascen
 La **multiplexación descendente** es el proceso por el cual la capa de transporte agrupa los datos de varias aplicaciones (cada una identificada por su puerto de origen) en un único flujo de segmentos, añadiendo el encabezado TCP/UDP correspondiente. En cambio, la **multiplexación ascendente** ocurre en el receptor: al llegar un segmento, la capa de transporte lee el puerto de destino y entrega el cuerpo de datos a la aplicación correcta, separando así el flujo único en sus correspondientes sockets.
 los ejemplos son un cliente de correo y una aplicación de videoconferencia enviando datos simultáneos por UDP hacia el mismo servidor. En la **multiplexación ascendente**, cuando llegan los segmentos la capa lee el puerto de destino y reenvía los datos al proceso adecuado; los ejemplos son un servidor que atiende peticiones HTTP en el puerto 80 mientras gestiona conexiones FTP en el 21 y, según el puerto, entrega los datos al módulo web o al servicio de archivos.
 
-### Pregunta 9: Cálculo del Tamaño de Ventana en TCP
+### Pregunta 9: Cálculo del Tamaño de Ventana en TCP ✓
 
 Se tiene un enlace con los siguientes parámetros:
 
@@ -129,14 +129,38 @@ Se tiene un enlace con los siguientes parámetros:
 
 Realiza lo siguiente:
 
-1. Convierte las unidades necesarias (por ejemplo, RTT a segundos y ancho de banda a bps).  
+1. Convierte las unidades necesarias (por ejemplo, RTT a segundos y ancho de banda a bps).
+   Para el enlace con RTT = 50 ms, ancho de banda = 100 Mbps y MSS = 1 500 B:
+
+   **Convertir unidades**  
+   - RTT: 50 ms = 0,05 s  
+   - Ancho de banda: 100 Mbps = 100 × 10⁶ bps
+
 2. Calcula el tamaño óptimo de la ventana en bits y en bytes usando la fórmula:  
    
-   > Ventana óptima = Ancho de banda × RTT  
+   > Ventana óptima = Ancho de banda × RTT
+   
+**Calcular ventana óptima en bits**  
 
-3. Determina aproximadamente el número de segmentos MSS que pueden estar en tránsito simultáneamente.  
+ventana_bits = ancho_banda × RTT
+= 100×10⁶ bps × 0,05 s
+= 5 000 000 bits
 
-Muestra todos los pasos de tu cálculo.  
+**Pasar a bytes**
+
+ventana_bytes = 5 000 000 bits ÷ 8
+= 625 000 bytes
+
+3. Determina aproximadamente el número de segmentos MSS que pueden estar en tránsito simultáneamente.
+   
+   **Número de segmentos MSS en vuelo**
+n_segmentos ≈ 625 000 bytes ÷ 1 500 bytes/segmento
+≈ 416,67
+
+Caben **≈ 417** segmentos simultáneos (416 completos y uno a la mitad aproxidamente).
+ 
+- **Ventana óptima** = 5 000 000 bits (625 000 bytes)  
+- **Segmentos simultáneos** ≈ 417  
 
 ### Pregunta 10: Control de Congestión en TCP
 
