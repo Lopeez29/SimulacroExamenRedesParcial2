@@ -34,7 +34,7 @@ https://github.com/Lopeez29/SimulacroExamenRedesParcial2.git
 El enrutamiento por inundación funciona de modo que cuando un nodo recibe un paquete que no le corresponde, lo reenvía a todos sus vecinos salvo al que se lo envió.
 Para ello, utiliza un identificador único para descartar duplicados y evitar bucles. Este no requiere de tablas ni cálculos de rutas, lo que simplifica su implementación y aporta gran tolerancia a errores, ya que el paquete puede llegar por cualquier camino disponible. Sin embargo, al generar réplicas masivas, satura el ancho de banda, incrementa la latencia y no resulta práctico en redes de tamaño medio o grande.  
 
-## Pregunta 2: Cálculo de Direcciones de Broadcast y Subredes
+## Pregunta 2: Cálculo de Direcciones de Broadcast y Subredes ✓
 
 **a)** Para la subred `172.29.152.0` con máscara `255.255.248.0`, determina la dirección de broadcast. Explica el proceso de conversión de la máscara a binario y cómo se obtiene el resultado.
 
@@ -57,7 +57,7 @@ Por tanto, la dirección de broadcast es **172.29.159.255**.
 
 Para la red **172.18.26.0/23** (máscara 255.255.254.0) reservo 23 bits para la parte de red y quedan 9 para los hosts, por lo que el rango va de 172.18.26.0 a 172.18.27.255. En cuanto a la última dirección, **172.18.27.255**, es el broadcast, ya que equivale a poner todos los bits de host a 1.
 
-## Pregunta 3: Última Dirección Válida y Rango de Hosts
+## Pregunta 3: Última Dirección Válida y Rango de Hosts ✓
 
 **a)** Con la subred `172.30.67.192` y máscara `255.255.255.192`, determina cuál es la última dirección de host válida (excluyendo la dirección de broadcast).
 
