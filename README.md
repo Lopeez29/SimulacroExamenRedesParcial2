@@ -69,11 +69,15 @@ En `172.22.53.199/22` (máscara `255.255.252.0`), el salto es de 4 en el tercer 
 - Primera IP de host: **172.22.52.1**  
 - Última IP de host: **172.22.55.254**  
 
-## Pregunta 4: Capacidad y Segmentación de Subredes
+## Pregunta 4: Capacidad y Segmentación de Subredes ✓
 
 **a)** Calcula el número de equipos (hosts) que pueden conectarse en la red `172.26.0.0` con máscara `255.255.255.192`.
 
+Para la red `172.26.0.0/26` (máscara `255.255.255.192`) quedan **6 bits** para identificadores de host, por lo que caben `2^6 − 2 = 62` dispositivos.
+
 **b)** Dado el host `172.18.171.190/23`, identifica a qué subred pertenece, explicando cómo se determina el bloque correspondiente.
+
+Con el host `172.18.171.190/23` (máscara `255.255.254.0`) presto 23 bits a la red y dejo 9 para hosts. El salto en el tercer octeto es de 2 (`256 − 254`), así que el bloque en el que cae el valor 171 es el que empieza en `170` (`171 − 1`). Entonces, la subred es **172.18.170.0/23**.
 
 ## Pregunta 5: Número de Subredes Necesarias ✓
 
