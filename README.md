@@ -38,16 +38,24 @@ Para ello, utiliza un identificador único para descartar duplicados y evitar bu
 
 **a)** Para la subred `172.29.152.0` con máscara `255.255.248.0`, determina la dirección de broadcast. Explica el proceso de conversión de la máscara a binario y cómo se obtiene el resultado.
 
-Para la subred **172.29.152.0/21** (máscara `255.255.248.0`):
-
-
-
-
+Para la subred **172.29.152.0/21** (máscara 255.255.248.0) se reservan 21 bits para identificar la red y los 11 restantes para hosts. Al avanzar en saltos de 8 en el tercer octeto (256−248) el último bloque que incluye 172.29.152.0 termina en **172.29.159.255**, que es la dirección de broadcast.  
 
 - La máscara en binario es  
+  `11111111.11111111.11111000.00000000`  
+  — 21 bits en “1” para la red y 11 bits en “0” para hosts.
 
+- El incremento en el tercer octeto es  
+  `256 − 248 = 8`,  
+  de modo que los bloques son 172.29.152.0, 172.29.160.0, y sucesivamente.
+
+- El broadcast de la primera red se obtiene poniendo a “1” todos los bits de host:  
+  172.29.152.0 → 172.29.159.255.
+
+Por tanto, la dirección de broadcast es **172.29.159.255**.
 
 **b)** Dado el bloque `172.18.26.0/23`, calcula la dirección de broadcast y justifica el proceso.
+
+Para la red **172.18.26.0/23** (máscara 255.255.254.0) reservo 23 bits para la parte de red y quedan 9 para los hosts, por lo que el rango va de 172.18.26.0 a 172.18.27.255. En cuanto a la última dirección, **172.18.27.255**, es el broadcast, ya que equivale a poner todos los bits de host a 1.
 
 ## Pregunta 3: Última Dirección Válida y Rango de Hosts
 
