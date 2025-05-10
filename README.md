@@ -106,13 +106,18 @@ En TCP se establece primero un three-way handshake antes de enviar datos; se gar
 **Streaming**: se prioriza la fluidez, se tolera alguna pérdida antes que cortes. 
 **Juegos online**: se busca latencia mínima; un retraso por confirmaciones dañaría la experiencia.
 
-### Pregunta 7: Establecimiento y Terminación de Conexión en TCP
+### Pregunta 7: Establecimiento y Terminación de Conexión en TCP ✓
 
 Describe en detalle el proceso de establecimiento de conexión en TCP (Three-Way Handshake) y el proceso de terminación de la conexión (Four-Way Handshake). Explica la importancia de cada uno de los pasos involucrados.
 
-### Pregunta 8: Multiplexación y Demultiplexación
+Para abrir la conexión en TCP primero yo envío un paquete **SYN** con mi número de secuencia, el servidor me responde con **SYN+ACK** aceptando mi número y anunciando el suyo, y luego yo remito un **ACK** final para confirmar que todo está sincronizado. Para cerrar la conexión, cualquiera de los dos lados puede mandar un **FIN**, el otro contesta con un **ACK** y cuando ya no tiene más datos que enviar envía su propio **FIN**, al que yo remito un último **ACK**. Así me aseguro de que todos los datos se han entregado antes de liberar la conexión.  
+
+### Pregunta 8: Multiplexación y Demultiplexación ✓
 
 Explica el concepto de **multiplexación descendente** y **multiplexación ascendente** en la capa de transporte, y proporciona un ejemplo práctico para cada caso.
+
+La **multiplexación descendente** es el proceso por el cual la capa de transporte agrupa los datos de varias aplicaciones (cada una identificada por su puerto de origen) en un único flujo de segmentos, añadiendo el encabezado TCP/UDP correspondiente. En cambio, la **multiplexación ascendente** ocurre en el receptor: al llegar un segmento, la capa de transporte lee el puerto de destino y entrega el cuerpo de datos a la aplicación correcta, separando así el flujo único en sus correspondientes sockets.
+los ejemplos son un cliente de correo y una aplicación de videoconferencia enviando datos simultáneos por UDP hacia el mismo servidor. En la **multiplexación ascendente**, cuando llegan los segmentos la capa lee el puerto de destino y reenvía los datos al proceso adecuado; los ejemplos son un servidor que atiende peticiones HTTP en el puerto 80 mientras gestiona conexiones FTP en el 21 y, según el puerto, entrega los datos al módulo web o al servicio de archivos.
 
 ### Pregunta 9: Cálculo del Tamaño de Ventana en TCP
 
